@@ -11,6 +11,7 @@ export async function startREPL(state: State) {
     }
 
     const commandName = words[0];
+    const args = words.slice(1); // Extract arguments after command name
 
     const cmd = state.commands[commandName];
     if (!cmd) {
@@ -22,7 +23,7 @@ export async function startREPL(state: State) {
     }
 
     try {
-      await cmd.callback(state);
+      await cmd.callback(state, ...args); // Spread arguments
     } catch (e) {
       console.log((e as Error).message);
     }
