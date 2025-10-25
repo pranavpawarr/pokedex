@@ -1,34 +1,29 @@
-import { describe, expect, test, beforeEach } from "vitest";
-import { Cache } from "./pokecache.js";
+import { cleanInput } from "./repl.js";
+import { describe, expect, test } from "vitest";
 
-describe("Cache", () => {
-  let cache: Cache;
-
-  beforeEach(() => {
-    cache = new Cache();
-  });
-
-  test.concurrent.each([
-    {
-      key: "https://example.com",
-      val: "testdata",
-      interval: 500,
-    },
-    {
-      key: "https://example.com/path",
-      val: "moretestdata",
-      interval: 1000,
-    },
-  ])("Test Caching $interval ms", async ({ key, val, interval }) => {
-    const cache = new Cache(interval);
-
-    cache.add(key, val);
-    expect(cache.get(key)).toBe(val);
-
-    await new Promise((resolve) => setTimeout(resolve, interval + 100));
-
-    expect(cache.get(key)).toBeUndefined(); // Changed from toBe(null)
-
-    cache.stopReapLoop();
+describe.each([
+  {
+    input: "  ",
+    expected: [],
+  },
+  {
+    input: "  hello  ",
+    expected: ["hello"],
+  },
+  {
+    input: "  hello  world  ",
+    expected: ["hello", "world"],
+  },
+  {
+    input: "  HellO  World  ",
+    expected: ["hello", "world"],
+  },
+])("cleanInput($input)", ({ input, expected }) => {
+  test(`Expected: ${expected}`, () => {
+    const actual = cleanInput(input);
+    expect(actual).toHaveLength(expected.length);
+    for (const i in expected) {
+      expect(actual[i]).toBe(expected[i]);
+    }
   });
 });
