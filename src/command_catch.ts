@@ -9,7 +9,7 @@ export async function commandCatch(state: State, ...args: string[]) {
   const roll = Math.random();
 
   if (roll < difficulty) {
-    state.pokedex[name] = p;
+    state.caughtPokemon[name] = p;
     console.log(`${name} was caught!`);
   } else {
     console.log(`${name} escaped!`);
