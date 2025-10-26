@@ -1,5 +1,4 @@
 import { State } from "./state.js";
-import { commandExplore } from "./command_explore";
 
 export async function commandCatch(state: State, ...args: string[]) {
   const name = args[0]?.toLowerCase()?.trim();
